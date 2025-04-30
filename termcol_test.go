@@ -45,12 +45,18 @@ func TestCombinations(t *testing.T) {
 
 
 func ExampleEffect() {
-    // Set foreground colors.
+    // Output text in various foreground colors
     fmt.Printf("Foreground: %sBlack%sRed%sGreen%sYellow%sBlue%sMagenta%sCyan%sWhite%s\n",
         Effect(FgBlack), Effect(FgRed), Effect(FgGreen), Effect(FgYellow), Effect(FgBlue), Effect(FgMagenta), Effect(FgCyan), Effect(FgWhite),
         Effect())
-    // Set background colors.
+
+    // Output text in various background colors
     fmt.Printf("Background: %sBlack%sRed%sGreen%sYellow%sBlue%sMagenta%sCyan%sWhite%s\n",
         Effect(BgBlack), Effect(BgRed), Effect(BgGreen), Effect(BgYellow), Effect(BgBlue), Effect(BgMagenta), Effect(BgCyan), Effect(BgWhite),
+        Effect())
+
+    // Output text in red, bold, and underlined
+    fmt.Printf("%sText %sText also underlined%s Text%s\n",
+        Effect(FgRed, Bold), Effect(Underline), Effect(UnderlineOff), 
         Effect())
 }
