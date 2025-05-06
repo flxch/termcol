@@ -8,5 +8,8 @@ package termcol
 
 // Note that `Effect()` resets to the default setting.
 
-// When setting the package variable `NoColors` to true, the function Effect
+// When setting the package variable `NoColor` to true, the function Effect
 // always returns the empty string independently from its arguments.
+
+// The type `ColorCode` allows one to turn off coloring schemes "locally".
+// Concretely, `NoColor` is local to each `ColorCode` instance.
