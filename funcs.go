@@ -9,7 +9,7 @@ import (
 
 
 // `effect` returns the escape sequence as a string for setting the specified
-// effects `effs`. 
+// effects `effs`.
 func effect(effs ...int) string {
     if len(effs) == 0 {
         return reset
@@ -39,7 +39,7 @@ func effect(effs ...int) string {
 var NoColor bool
 
 
-// `Effect` returns a string for the effects `effs`.  The string consists of the 
+// `Effect` returns a string for the effects `effs`.  The string consists of the
 // respective terminal color escape sequences.  If `effs` is empty, all effects
 // are turned off.  The returned string can, e.g., be used in fmt.Printf calls.
 func Effect(effs ...int) string {
@@ -72,18 +72,52 @@ func FSetEffect(w io.Writer, effs ...int) error {
 
 type ColorCode struct {
     // If true, ignore color codes.
-    NoColor bool
+    NoColor   bool
+    // Translation color codes.
+    Translate map[int][]int
+    // If true, keep effects that are not in the translation map.
+    Keep      bool
+}
+
+func (c ColorCode) translate(effs []int) []int {
+    if c.Translate == nil {
+        // No translation of effects.
+        return effs
+    }
+
+    var rs []int
+    for _, eff := range effs {
+        if vs, ok := c.Translate[eff]; ok {
+            rs = append(rs, vs...)
+        } else if c.Keep {
+            // If c.Keep is false, all effects that are not in the translation
+            // map are filtered out.  If c.Keep is true, one must map eff to the
+            // empty slice to filter the effect out.
+            rs = append(rs, eff)
+        }
+    }
+    return rs
 }
 
 func (c ColorCode) Effect(effs ...int) string {
     if c.NoColor {
         return ""
     }
-    return effect(effs...)
+    teffs := c.translate(effs)
+    if len(teffs) == 0 && len(effs) != 0 {
+        // All effects are filtered out.  But since effs is not empty, do not
+        // reset.
+        return ""
+    }
+    return effect(teffs...)
 }
 
 func (c ColorCode) SetEffect(effs ...int) error {
     if c.NoColor {
+        return nil
+    }
+    teffs := c.translate(effs)
+    if len(teffs) == 0 && len(effs) != 0 {
         return nil
     }
     _, err := fmt.Printf("%s", effect(effs...))
@@ -93,7 +127,11 @@ func (c ColorCode) SetEffect(effs ...int) error {
 func (c ColorCode) FSetEffect(w io.Writer, effs ...int) error {
     if c.NoColor {
         return nil
-    }  
+    }
+    teffs := c.translate(effs)
+    if len(teffs) == 0 && len(effs) != 0 {
+        return nil
+    }
     _, err := fmt.Fprintf(w, "%s", effect(effs...))
     return err
 }
