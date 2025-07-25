@@ -98,11 +98,11 @@ func ExampleColorCode() {
         Err  = 3
     )
     coloring := ColorCode{
-        NoColor:  true, // Delete or set to false to see colorized output.
+        NoColor: true, // Delete or set to false to see colorized output.
         Translate: map[int][]int{
-            Info: []int{BgYellow, Bold},
-            Warn: []int{BgMagenta, Bold},
-            Err:  []int{BgRed, Bold},
+            Info: []int{Bold, BgYellow},
+            Warn: []int{Bold, BgMagenta},
+            Err:  []int{Bold, BgRed},
         },
     }
 

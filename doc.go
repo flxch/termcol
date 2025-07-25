@@ -12,4 +12,7 @@ package termcol
 // always returns the empty string independently from its arguments.
 
 // The type `ColorCode` allows one to turn off coloring schemes "locally".
-// Concretely, `NoColor` is local to each `ColorCode` instance.
+// Concretely, `NoColor` is local to each `ColorCode` instance.  Furthermore,
+// `ColorCode` allows one to translate and filter our color settings.  The
+// translation, also allows one to define one's own coloring scheme, like for
+// error and debug messages (e.g., error -> red and debug -> blue).

@@ -81,7 +81,7 @@ type ColorCode struct {
 
 func (c ColorCode) translate(effs []int) []int {
     if c.Translate == nil {
-        // No translation of effects.
+        // Fast path: no translation of effects.
         return effs
     }
 
