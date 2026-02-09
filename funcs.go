@@ -70,6 +70,12 @@ func FSetEffect(w io.Writer, effs ...int) error {
 }
 
 
+// The `ColorCode` struct allows one to make the color coding local in packages
+// that use the termcol package.  For example, setting the global variable
+// `NoColor` to true will turn the coloring off for all packages that use the
+// `Effect` function from the termcol package.  Using separate `ColorCode`
+// structs in the packages allows one to turn off the coloring individually.
+// Translations can also be made individually for packages.
 type ColorCode struct {
     // If true, ignore color codes.
     NoColor   bool

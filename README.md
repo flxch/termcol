@@ -1,2 +1,3 @@
 # termcol
-Go package for ANSI escape sequence for terminal colors
+
+Go package for ANSI escape sequence for terminal colors.
